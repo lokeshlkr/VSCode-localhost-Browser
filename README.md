@@ -1,65 +1,19 @@
-# browser README
+# localhost browser
 
-This is the README for your extension "browser". After writing up a brief description, we recommend including the following sections.
+## inspiration: 
+I was making anangular project and wanted to mock some UI, i was making changes in the UI then switching to the browser and then switching back to vscode, which i did not want.
 
-## Features
+Possible alternative was to make the vscode and my browser window small and snap to sides which wastes quite a lot of space in the window borders and paddings of chrome and vscode on my already very small monitor.
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+## features:
+It is extremly simple, except it asks for the port you wanna connect to on localhost.
 
-For example if there is an image subfolder under your extension project workspace:
 
-\!\[feature X\]\(images/feature-x.png\)
+## mechanism:
+It just creates a webview which loads an external html into an iframe with scripts enabled.
 
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
 
-## Requirements
+## TODO:
+ability to manually refresh the page. Right now it depends on angular's hot reload functionality to refresh autometically on change in angular project, might work with other hot reloading methods.
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
-
-## Extension Settings
-
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
-
-For example:
-
-This extension contributes the following settings:
-
-* `myExtension.enable`: enable/disable this extension
-* `myExtension.thing`: set to `blah` to do something
-
-## Known Issues
-
-Calling out known issues can help limit users opening duplicate issues against your extension.
-
-## Release Notes
-
-Users appreciate release notes as you update your extension.
-
-### 1.0.0
-
-Initial release of ...
-
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
-
------------------------------------------------------------------------------------------------------------
-
-## Working with Markdown
-
-**Note:** You can author your README using Visual Studio Code.  Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux)
-* Toggle preview (`Shift+CMD+V` on macOS or `Shift+Ctrl+V` on Windows and Linux)
-* Press `Ctrl+Space` (Windows, Linux) or `Cmd+Space` (macOS) to see a list of Markdown snippets
-
-### For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
+open multiple ports simultaneously.
