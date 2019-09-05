@@ -16,6 +16,4 @@ It creates a `vscode.WebviewPanel` which contains a static html with an iframe. 
 
 
 ## TODO:
-ability to manually refresh the page. Right now it depends on angular's hot reload functionality to refresh autometically on change in angular project, might work with other hot reloading methods.
-
-open multiple ports simultaneously.
+-
