@@ -1,44 +1,19 @@
-
 import * as vscode from 'vscode';
 
-export function activate(context: vscode.ExtensionContext) {
-	// Track currently webview panel
-	let currentPanel: vscode.WebviewPanel | undefined = undefined;	
-  
-	context.subscriptions.push(
-	  vscode.commands.registerCommand('extension.browse_localhost', () => {
-		vscode.window.showInputBox({prompt:"Enter Port Number: "}).then((port:string|undefined)=>{
-			if(port==="" || port===undefined){
-				return;
-			}
-			
-		const columnToShowIn = vscode.window.activeTextEditor
-		? vscode.window.activeTextEditor.viewColumn
-		: undefined;
+class Tab{
+	port:string;
+	panel:vscode.WebviewPanel;
+	constructor(port:string,panel:vscode.WebviewPanel){
+		this.port = port;
+		this.panel = panel;
+		this.refresh();
+	}
 
-	  if (currentPanel) {
-		// If we already have a panel, show it in the target column
-		currentPanel.reveal(columnToShowIn);
-	  } else {
-		// Otherwise, create a new panel
-		currentPanel = vscode.window.createWebviewPanel(
-		  'localhost',
-		  `localhost:${port}`,
-		  //vscode.ViewColumn.One,
-		  columnToShowIn||vscode.ViewColumn.One,
-		  {
-			  enableScripts:true
-		  }
-		);
-		currentPanel.webview.html = `<!DOCTYPE html>
-		<html lang="en">
-		<head>
-			<meta charset="UTF-8">
-			<meta name="viewport" content="width=device-width, initial-scale=1.0">
-			<title>localhost Browser</title>
-		</head>
-		<body style="background-color:white;">     
-			<iframe src="http://localhost:${port}" 
+	refresh(){
+		this.panel.title = `localhost:${this.port}`;
+		this.panel.webview.html = `
+		<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>localhost Browser</title></head>
+		<body style="background-color:white;"><iframe src="http://localhost:${this.port}" 
 				style="position:fixed; 
 					top:0; 
 					left:0; 
@@ -51,21 +26,74 @@ export function activate(context: vscode.ExtensionContext) {
 					padding:0; 
 					overflow:hidden; 
 					z-index:999999;">
-			</iframe>
-		</body>
-		</html>`;
+		</iframe></body></html>`;
+	}
 
-		// Reset when the current panel is closed
-		currentPanel.onDidDispose(
-		  () => {
-			currentPanel = undefined;
-		  },
-		  null,
-		  context.subscriptions
+
+}
+
+export function activate(context: vscode.ExtensionContext) {
+	let tabs:[Tab];	
+	let getPORT = ()=>{
+		return vscode.window.showInputBox({prompt:"Enter Port Number."});
+	};
+	let create = (port:string)=>{
+		const columnToShowIn = vscode.window.activeTextEditor 
+		?(vscode.window.activeTextEditor.viewColumn||vscode.ViewColumn.One) 
+		: vscode.ViewColumn.One;
+		// Create a new panel
+		let panel:vscode.WebviewPanel | undefined = vscode.window.createWebviewPanel(
+			'localhost',
+			"localhost:xxxx",
+			columnToShowIn,
+			{
+				enableScripts:true,
+				retainContextWhenHidden: true
+			}
 		);
-	  }
+		// Reset when the current panel is closed
+		panel.onDidDispose(
+			() => {panel = undefined;},
+			null,
+			context.subscriptions
+		);
+		return panel;
+	};
+	let main = ()=>{
+		getPORT()
+		.then((port:string|undefined)=>{
+			if(port!=="" && port!==undefined){
+				if (!tabs){
+					tabs = [new Tab(port,create(port))];
+				}else{
+					let tab:Tab|undefined = isPresent(port); 
+					tab
+					?tab.panel.reveal()
+					:tabs.push(new Tab(port,create(port)));
+				}
+			}
 		});
-	  })
-	);
-  }
+	};
+
+	let isPresent = (port:string)=>{
+		let res:Tab|undefined = undefined;
+		for(let tab of tabs){
+			if (tab.port===port){
+				res = tab;
+				break;
+			}
+		}
+		return res;
+	};
+
+	let refresh = ()=>{
+		tabs.forEach(tab=>{
+			tab.port = "3000";
+			tab.refresh();
+		});		
+	};
+
+  	context.subscriptions.push(vscode.commands.registerCommand('extension.browse_localhost', main ));
+  	context.subscriptions.push(vscode.commands.registerCommand('extension.refresh_tab', refresh ));
+}
 export function deactivate() {}

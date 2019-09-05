@@ -21,7 +21,11 @@
 		"commands": [
 			{
 				"command": "extension.browse_localhost",
-				"title": "browse localhost"
+				"title": "localhostbrowser : Start"
+			},
+			{
+				"command": "extension.refresh_tab",
+				"title": "localhostbrowser : Refresh all tabs"
 			}
 		]
 	},
