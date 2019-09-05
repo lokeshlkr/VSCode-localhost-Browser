@@ -8,6 +8,7 @@ Possible alternative was to make the vscode and my browser window small and snap
 1. Asks for port you wanna connect to when opening a new instance.
 2. Can handle multiple tabs with different ports.
 3. Ability to manually refresh the tabs.
+4. Ability to move backwards and forwards in the browser.
 
 
 ## Mechanism:
