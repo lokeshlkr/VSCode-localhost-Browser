@@ -3,7 +3,7 @@
 	"displayName": "localhostBrowser",
 	"description": "a localhost browser, in vscode preview of webapps for UI development.",
 	"publisher": "stranger",
-	"version": "0.3.0",
+	"version": "0.3.1",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/lokeshlkr/VSCode-localhost-Browser.git"

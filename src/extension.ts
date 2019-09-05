@@ -20,7 +20,7 @@ class Tab{
 }
 
 export function activate(context: vscode.ExtensionContext) {
-	let tabs:[Tab];	
+	let tabs:Tab[];	
 	let getPORT = ()=>{
 		return vscode.window.showInputBox({prompt:"Enter Port Number."});
 	};
@@ -40,7 +40,10 @@ export function activate(context: vscode.ExtensionContext) {
 		);
 		// Reset when the current panel is closed
 		panel.onDidDispose(
-			() => {panel = undefined;},
+			() => {
+				tabs = tabs.filter(tab=>tab.panel!==panel);
+				panel = undefined;
+			},
 			null,
 			context.subscriptions
 		);
